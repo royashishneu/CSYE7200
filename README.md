@@ -1,2 +1,2 @@
-# CSYE7200
-Public repository without solutions for CSYE7200
+# Big Data Engineering using Scala - CSYE7200
+This is a repo where I post all my assignment from CSYE7200 ccourse under Prof. Robin Hillyard
