@@ -1,5 +1,7 @@
 package edu.neu.coe.csye7200.asstmd
 
+import scala.::
+import scala.collection.mutable.ListBuffer
 import scala.io.Source
 import scala.util.Try
 
@@ -90,6 +92,8 @@ case class Rating(code: String, age: Option[Int]) {
 object Movie extends App {
 
   implicit object ParsableMovie extends Parsable[Movie] {
+
+
     /**
       * Method to yield a Try[Movie] from a String representing a line of input of the movie database file.
       *
@@ -98,7 +102,7 @@ object Movie extends App {
       * @param w a line of input.
       * @return a Try[Movie]
       */
-    def parse(w: String): Try[Movie] = ??? // TO BE IMPLEMENTED
+    def parse(w: String): Try[Movie] = ???// TO BE IMPLEMENTED
   }
 
   val ingester = new Ingest[Movie]()
@@ -119,9 +123,12 @@ object Movie extends App {
   def elements(list: Seq[String], indices: Int*): List[String] = {
     // Hint: form a new list which is consisted by the elements in list in position indices. Int* means array of Int.
     // 6 points
-    val result: Seq[String] =
+    val a = 0
+    val l = new ListBuffer[String]()
+    for (a <- indices) l += list(a)
+    val result: ListBuffer[String] = l
     // TO BE IMPLEMENTED
-    ???
+
     result.toList
   }
 
@@ -201,8 +208,11 @@ object Rating {
     */
   // Hint: This should similar to apply method in Object Name. The parameter of apply in case match should be same as case class Rating
   // 13 points
-  def apply(s: String): Rating = ??? // TO BE IMPLEMENTED
+  def apply(s: String): Rating = s match {
+    case rRating(code, _, null) => Rating(code, None)
 
+    case _ => throw ParseException(s"parse error in Rating: $s")
+  }
 }
 
 case class ParseException(w: String) extends Exception(w)
