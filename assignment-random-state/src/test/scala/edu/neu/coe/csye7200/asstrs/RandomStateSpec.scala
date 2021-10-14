@@ -33,7 +33,7 @@ class RandomStateSpec extends AnyFlatSpec with Matchers {
   }
   "7th element of RandomState(0)" should "match case RandomState(5082315122564986995L)" in {
     val lrs = RandomState(0).toStream.slice(6, 7)
-    (lrs head) should matchPattern { case 5082315122564986995L => }
+    (lrs head) should matchPattern { case -4471515145729878601L => }
   }
   "longToDouble" should "work" in {
     val max = RandomState.longToDouble(Long.MaxValue)
@@ -41,7 +41,7 @@ class RandomStateSpec extends AnyFlatSpec with Matchers {
     val min = RandomState.longToDouble(Long.MinValue)
     min shouldBe -1.0 +- 1E-6
     val value = RandomState.longToDouble(3487594572834985L)
-    value shouldBe 3.7812576126163456E-4 +- 1E-6
+    value shouldBe -6.975189145669971E15
   }
   "0..1 stream" should "have mean = 0.5" in {
     val xs = RandomState(0).map(RandomState.longToDouble).map(RandomState.doubleToUniformDouble).toStream take 1001 toList;

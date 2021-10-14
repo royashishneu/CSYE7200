@@ -1,6 +1,8 @@
 package edu.neu.coe.csye7200.asstrs
 
-import scala.util.Random
+import edu.neu.coe.csye7200.asstrs
+
+import scala.util.{Failure, Random, Success, Try}
 
 /**
   * Monadic trait which defines a random-state.
@@ -38,14 +40,21 @@ trait RandomState[T] {
     */
   // Hint: Think of the input and output, find the appropriate method that achieve this.
   // 10 points
-  def flatMap[U](f: T => RandomState[U]): RandomState[U] = ??? // TO BE IMPLEMENTED
+
+
+
+  def flatMap[U](f: T => RandomState[U]): RandomState[U] = ???//(map(RandomState[T]).toStream.take(RandomState[T]))// TO BE IMPLEMENTED
 
   /**
     * @return a stream of T values
     */
   // Hint: This a recursively method and it concatenate current element with following elements.
   // 12 points
-  def toStream: LazyList[T] = ??? // TO BE IMPLEMENTED
+
+def toStream: LazyList[T] = {
+    def inner(v: T): LazyList[T] = v #:: inner(next.get)
+    inner(get)
+  } // TO BE IMPLEMENTED
 }
 
 /**
@@ -55,16 +64,20 @@ trait RandomState[T] {
   * @param g the function which maps a Long value into a T
   * @tparam T the underlying type of this random state, i.e. the type of the result of calling get
   */
+
 case class JavaRandomState[T](n: Long, g: Long => T) extends RandomState[T] {
   // Hint: Remember to use the "seed" to generate next RandomState.
   // 7 points
-  def next: RandomState[T] = ??? // TO BE IMPLEMENTED
+  val r = new Random(n)
+
+  def next: RandomState[T] = JavaRandomState[T](r.nextLong(), g) // TO BE IMPLEMENTED
   // Hint: Think of the input and output.
   // 5 points
-  def get: T = ??? // TO BE IMPLEMENTED
+
+  def get: T = g(n)// TO BE IMPLEMENTED
   // Hint: This one need function composition.
   // 13 points
-  def map[U](f: T => U): RandomState[U] = ??? // TO BE IMPLEMENTED
+  def map[U](f: T => U): RandomState[U] = JavaRandomState[U](n,g andThen(f)) // TO BE IMPLEMENTED
 }
 
 case class DoubleRandomState(n: Long) extends RandomState[Double] {
@@ -94,7 +107,8 @@ object RandomState {
 
   // Hint: This is a easy one, remember that it not only convert a Long to a Double but also scale down the number to -1 ~ 1.
   // 4 points
-  val longToDouble: Long => Double = ??? // TO BE IMPLEMENTED
+
+  val longToDouble: Long => Double = { x => ((((x) - (Long.MinValue))*((1) - (-1))/((Long.MaxValue) - (Long.MinValue)))+(-1)) }// TO BE IMPLEMENTED
   val doubleToUniformDouble: Double => UniformDouble = { x => UniformDouble((x + 1) / 2) }
 }
 
