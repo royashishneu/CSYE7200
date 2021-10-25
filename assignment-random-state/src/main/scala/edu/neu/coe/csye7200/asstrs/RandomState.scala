@@ -47,7 +47,7 @@ trait RandomState[T] {
 
   /**
     * @return a stream of T values
-    */
+    */x
   // Hint: This a recursively method and it concatenate current element with following elements.
   // 12 points
 
